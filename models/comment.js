@@ -17,7 +17,12 @@ var UserSchema = new Schema({
 		},
 		"+1 is not an acceptable comment on this forum."
 		]
-	}
+	},
+
+	article: [{
+		type: Schema.Types.ObjectId,
+		ref: "Article"
+	}]
 });
 
 var Comment = mongoose.model("Comment", UserSchema);

@@ -1,0 +1,28 @@
+<div class="container">
+	<h1>Welcome to the Comments Section</h1>
+</div>
+
+<div class="container">
+{{#each array}}
+<li>{{this.title}}</li>
+<li><a href="{{this.link}}">{{this.link}}</a></li>
+{{/each}}	
+	</div>
+<div class="row">
+	<form class="col s12" name="newComment" method="POST" action="api/new-comment">
+		<div class="row">
+			<div class="input-field col s6">
+				<input name="author" id="author" type="text" class="validate">
+				<label for="author">Author</label>
+			</div>
+		</div>
+		<br>	
+		<div class="row">
+			<div class="input-field col s6">
+				<input name="comment" id="comment" type="text" class="validate">
+				<label for="comment">Comment</label>
+			</div>
+		<button type"submit">Submit</button>
+	</form>				
+</div>	
+<script src="assets/js/index.js"></script>

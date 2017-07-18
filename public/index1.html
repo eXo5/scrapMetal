@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+<meta charset="UTF-8">
+<!-- Compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/css/materialize.min.css">
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/js/materialize.min.js"></script>
+	<title>ScrapeTEST</title>
+</head>
+<body>
+	<div class="container-fullwidth">
+
+<div class="row">
+	<form class="col s12" name="newComment" method="POST" action="api/new-comment">
+		<div class="row">
+			<div class="input-field col s6">
+				<input id="author" type="text" class="validate">
+				<label for="author">Author</label>
+			</div>
+		</div>
+		<br>	
+		<div class="row">
+			<div class="input-field col s6">
+				<input id="comment" type="text" class="validate">
+				<label for="comment">Comment</label>
+			</div>
+		</div>	
+		<button type"submit">Submit</button>
+	</form>				
+</div>	
+
+	</div>
+<script
+  src="https://code.jquery.com/jquery-3.2.1.js"
+  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+  crossorigin="anonymous"></script>
+ </body>
+</html>

@@ -12,12 +12,38 @@ var db = mongojs(databaseUrl, collections);
   console.log("Database Error: " + err);
  });
 
+var hbsObj = {array: []};
 module.exports = function(app){
 
+//This route was a test.
+// app.get("/", function(req, res) {
+//   res.sendFile(path.resolve("./public/index1.html"));
+// });
 
 app.get("/", function(req, res) {
-  res.send("Hello world");
+request("https://www.reddit.com/r/programmerhumor", function(error, response, html){
+  var $ = cheerio.load(html);
+  var result = [];
+  $("p.title").each(function(i, element) {
+    var link = $(element).children().attr("href");
+    var title = $(element).children().text();
+
+    hbsObj.array.push({
+      title: title,
+      link: link
+    });
+
+    // res.json(result);
+
+  })
+}) 
+res.render("index", hbsObj);
 });
+
+app.post("/api/new-comment", function(req, res) {
+  console.log(req);
+  res.send(req.body);
+})
 
 app.get("/scrape", function(req, res){
 	request("https://www.reddit.com/r/programmerhumor", function(error, response, html) {
