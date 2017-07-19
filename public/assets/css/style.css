@@ -1,7 +1,12 @@
 body {
-	background-image: url(/assets/checkers-lanlinglaurel.com.jpg);
+	/*it was called pineapples*/
+	background-image: url(/assets/pineapples.jpg);
 }
 
 h1 {
 	color: blue;
+}
+
+#comment {
+	border: 2px;
 }

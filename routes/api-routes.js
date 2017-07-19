@@ -44,23 +44,22 @@ module.exports = function(app) {
                 })
             });//end cheerio.each()
             //console.log(results);
-
            res.send("Scrape Complete");
-
         });
     });
 
     app.get("/", function(req, res) {
-        //get all articles and save them to the handlebars Object;
-      Article.find({}, function(err, found){
-        if (err) {
-          console.log(err)
-        }
-        //console.log(found);
-         hbsObj.scrapeMetal.push(found);
-         console.log(hbsObj.scrapeMetal);
-      })
-    //render index with hbsObj;
+        //So I made it half work this way with the last route get("/testhandlebars")
+        //THIS USED TO get all the articles and save them to the handlebars Object and render them that way. But I followed the class example because I was originally scraping in here too, but that wouldn't render the page immediately and I thought about running a 2-3000 ms timer for res.render, but I deemed that a bit unnecessary, although I'm fairly certain it would work.;
+      // Article.find({}, function(err, found){
+      //   if (err) {
+      //     console.log(err)
+      //   }
+      //   //console.log(found);
+      //    //hbsObj.scrapeMetal.push(found);
+      //    console.log(hbsObj.scrapeMetal);
+      // })
+    //render index with whats now an hbsObj with an empty array;
     res.render("index", hbsObj);
     });
 
@@ -70,13 +69,9 @@ module.exports = function(app) {
             if (err) {
                 console.log(err);
             }
-        console.log('collection dropped');
+        console.log('Collection dropped');
          });
         res.send("Collection Dropped");
-    })
-
-    app.get("/getcomments", function(req, res) {
-        //nothing yet
     })
 
     app.post("/api/new-comment", function(req, res) {
@@ -86,29 +81,47 @@ module.exports = function(app) {
     })
 
     app.get("/articles/:id", function(req, res){
-
+        console.log(req.body);
         Article.findOne({"_id": req.params.id})
         .populate("comment")
         .exec(function(err, doc){
             if (err) {
             console.log(err);
             res.send(err);
-        }
-        res.send(doc);
+        } else {
+           console.log(doc);
+            //send doc to client, doc._id, doc.title, doc.comment[i]
+           res.json(doc);
+    }
         });
     });
 
-
-
-    // Route 2
-    // =======
-    // When you visit this route, the server will
-    // scrape data from the site of your choice, and save it to
-    // MongoDB.
-    // TIP: Think back to how you pushed website data
-    // into an empty array in the last class. How do you
-    // push it into a MongoDB collection instead?
-
+    app.post("/articles/:id", function(req, res){
+        console.log(req.body);
+        //save new Comment as req.body
+        var comment = new Comment({
+            user: req.body.author,
+            comment: req.body.comment
+        });
+        comment.save(function(err, doc){
+            if (err) {
+                console.log(err);
+            }
+            else{ 
+                console.log(doc);
+                Article.findOneAndUpdate({"_id": req.params.id}, {$push: {comment: doc}})
+                .exec(function(err, doc){
+                    if (err) {
+                        console.log(err)
+                    }
+                    else {
+                        res.send(doc);
+                    }
+                });
+            }
+        });
+    });
+    //send a json of all the links that were scraped for use by the app.get(root); 
     app.get("/articles", function(req, res) {
        Article.find({}, function(err, data) {
             if (err) {
@@ -118,5 +131,30 @@ module.exports = function(app) {
         });
     });
 
+    app.get("/testhandlebars", function(req, res){
+        //Yeah so I made it work with cheerio here and it populates everything, and I'm fairly certain I could use app.get("/", function(req, res){ cheerio request, $(p.title).each(func(i, element){ var article = new Article({title:title,link:link})res.redirect(/testhandlebars and do an Articles.find() and push everything into a hbsObj: {array: []}) })}) and it would work, but I'm ok with where I'm at right now.
+        request("https://www.reddit.com/r/programmerhumor", function(error, response, html) {
+            var $ = cheerio.load(html);
+            // array filled to populate data.
+            var results = [];
+            $("p.title").each(function(i, element) {
+                //grab href elements from each p class=title;
+                var link = $(element).children().attr("href");
+                var title = $(element).children().text();
+
+                // Saved these results in an array for testing purposes
+                 hbsObj.scrapeMetal.push({
+                  title: title,
+                  link: link
+                 });  
+            });
+        
+        });
+
+        var x = function() {
+            res.render("testhbs", hbsObj);
+        }
+        setTimeout(x, 3000);
+    });
 
 }
