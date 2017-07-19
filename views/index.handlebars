@@ -1,9 +1,17 @@
 <div class="container">
-	<h1>Welcome to the Comments Section</h1>
+	<h1>Welcome</h1>
 </div>
-
+<div class='row'>
+	<div class="col s9">
+		<div class="container" id="articles">
+{{!-- scraped information get's appended here --}}
+		</div>
+		<div class="col s3" id="comments">
+{{!-- comment form gets generated here via index.js --}}
+		</div>
+</div>
 <div class="container">
-{{#each array}}
+{{#each scrapeMetal}}
 <li>{{this.title}}</li>
 <li><a href="{{this.link}}">{{this.link}}</a></li>
 {{/each}}	
