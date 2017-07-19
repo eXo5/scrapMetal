@@ -109,6 +109,7 @@ module.exports = function(app) {
             }
             else{ 
                 console.log(doc);
+                //I didn't like the way it got rid of previous comments. I thought that functionality was ridiculous if we were going to make the reference in the articles schema be an array. so $push instead of what would otherwise be $set by default.
                 Article.findOneAndUpdate({"_id": req.params.id}, {$push: {comment: doc}})
                 .exec(function(err, doc){
                     if (err) {

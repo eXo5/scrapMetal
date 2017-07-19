@@ -24,9 +24,16 @@ var app = express();
 var Comment = require("./models/comment.js");
 var Article = require("./models/article.js");
 
-mongoose.connect("mongodb://localhost/scrapMetal");
+var databaseUri = "mongodb://localhost/scrapMetal";
+if (process.env.MONGODB_URI) {
+  mongoose.connect(process.env.MONGODB_URI);
+}
+else {
+  mongoose.connect("mongodb://localhost/scrapMetal");
+}
 
 var db = mongoose.connection;
+
 db.on("error", function(error){
 	console.log("Database error: " + error);
 });
