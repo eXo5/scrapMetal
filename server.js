@@ -33,10 +33,10 @@ db.on("error", function(error){
 
 db.once("open", function(error){
 if (error) {
-	console.log(error)
+	console.log(error);
 }
 	console.log('db works');
-})
+});
 
 require("./routes/api-routes")(app);
 
